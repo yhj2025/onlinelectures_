@@ -1,0 +1,15 @@
+#progress {
+    appearance: none;
+}
+#progress::-webkit-progress-bar {
+    background:#f0f0f0;
+    border-radius:10px;
+    box-shadow: inset 2px 2px 10px #ccc;
+}
+#progress::-webkit-progress-value {
+    border-radius:10px;
+    background: #0000b3;
+    background: -webkit-linear-gradient(to right,  #ccccff, #4d4dff);
+    background: linear-gradient(to right,  #ccccff, #4d4dff);
+
+}

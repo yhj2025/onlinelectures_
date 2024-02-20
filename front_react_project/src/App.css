@@ -1,0 +1,389 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+hr {
+  background:white;
+  height:1px;
+  border:0;
+}
+
+
+
+.onelist {
+  color : black;
+  font-size: 20px;
+  background-Color : #e6e6ff;
+  padding-top : 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.minilist{
+  background-color: #e6e6ff;
+  padding-top : 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom : 7px;
+  width : 450px;
+  display: inline-flex;
+  justify-content: space-around;
+}
+
+.video{
+  display: inline-flex;
+  justify-content: space-around;
+}
+
+.textarea{
+  caret-color: #e6e6ff;
+}
+
+.instructor-info {
+  display: flex; /* Flexbox를 사용하여 자식 엘리먼트를 가로로 정렬합니다. */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+
+
+.box {
+  width: 150px;
+  height: 150px; 
+  background: #BDBDBD;
+  border-radius: 70%;
+  overflow: hidden;
+}
+.profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* 커리큘럼 태그 */
+.curriculum {
+  background-color: lightgrey;
+  height: 50px;
+  display: flex;
+  margin: 0 60px;
+}
+
+/* 커리큘럼 목차 태그 */
+.curriculum-toc{
+  margin: 0 100px;
+  flex : 1;
+}
+
+.css-box-radius{
+	/*start ------------*/
+	background: #6666ff; 
+  color : #ffffff;
+	border: solid #ffffff 2px; 
+	border-top-left-radius: 28px; -webkit-border-top-left-radius: 28px; -moz-border-top-left-radius: 28px; 
+	border-top-right-radius: 28px; -webkit-border-top-right-radius: 28px; -moz-border-top-right-radius: 28px; 
+	border-bottom-left-radius: 28px; -webkit-border-bottom-left-radius: 28px; -moz-border-bottom-left-radius: 28px; 
+	border-bottom-right-radius: 27px; -webkit-border-bottom-right-radius: 27px; -moz-border-bottom-right-radius: 27px; 
+  width: 80px;
+  height: 40px;
+}
+
+.css-box-radius-auto{
+	/*start ------------*/
+	background: #6666ff; 
+  color : #ffffff;
+	border: solid #ffffff 2px; 
+	border-top-left-radius: 28px; -webkit-border-top-left-radius: 28px; -moz-border-top-left-radius: 28px; 
+	border-top-right-radius: 28px; -webkit-border-top-right-radius: 28px; -moz-border-top-right-radius: 28px; 
+	border-bottom-left-radius: 28px; -webkit-border-bottom-left-radius: 28px; -moz-border-bottom-left-radius: 28px; 
+	border-bottom-right-radius: 27px; -webkit-border-bottom-right-radius: 27px; -moz-border-bottom-right-radius: 27px; 
+  width: auto;
+  height: 40px;
+}
+
+
+.css-opacity{
+	/*start ------------*/
+	background: #FFFFFF; 
+	border: solid #E0E0E0 6px; 
+	opacity: 0.9; 
+	-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity= 88); /* // for IE8 */
+	filter: alpha(opacity= 88); /* //for IE5-7 */
+  height: 70px;
+  padding: 30px;
+}
+
+/* 서브메뉴바 */
+#check-btn { display: none; }
+#check-btn:checked ~ .menubars { display: block; } 
+.menubars { display: none; }
+
+
+
+
+
+/*  */
+
+.tag-css{
+  background-color:#e6e6ff ;
+  font-size: 30px;
+  font-weight: bold;
+  display: inline-flex;
+}
+
+    
+.category{
+  display: inline-flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 30px;
+}
+
+
+.line {
+  /* 오른쪽에만 선 부여 */
+  border-right: thick solid white;
+  /* 높이로 조절 */
+  height: 80%; 
+  display:inline-flex;
+}
+
+.rightP {
+  display: inline-flex;
+  margin: 0;
+}
+
+
+.myonlinelist{
+  background-color: #e6e6ff;
+  height: 350px;
+  /* justify-content: center; */
+  padding: 20px;
+}
+
+.locate{
+  display: flex;
+  justify-content: space-between;
+}
+
+.myonlinecourse{
+	/*start ------------*/
+	background: #F8F8F8; 
+	border: solid #D9D9D9 2px; 
+	border-top-left-radius: 15px; -webkit-border-top-left-radius: 15px; -moz-border-top-left-radius: 15px; 
+	border-top-right-radius: 15px; -webkit-border-top-right-radius: 15px; -moz-border-top-right-radius: 15px; 
+	border-bottom-left-radius: 15px; -webkit-border-bottom-left-radius: 15px; -moz-border-bottom-left-radius: 15px; 
+	border-bottom-right-radius: 15px; -webkit-border-bottom-right-radius: 15px; -moz-border-bottom-right-radius: 15px; 
+  height: 200px;
+  width: 800px;
+  display: flex;
+  margin-top: 50px;
+  margin-left: 80px;
+}
+
+.myclasspaging{
+  margin-left: 450px;
+}
+
+
+.myclasswishlist{
+  background-color: #e6e6ff;
+  width: 450px;
+  height: 300px;
+  /* justify-content: center; */
+  padding: 20px;
+}
+
+.myclasswish{
+	/*start ------------*/
+	background: #F8F8F8; 
+	border: solid #D9D9D9 2px; 
+	border-top-left-radius: 15px; -webkit-border-top-left-radius: 15px; -moz-border-top-left-radius: 15px; 
+	border-top-right-radius: 15px; -webkit-border-top-right-radius: 15px; -moz-border-top-right-radius: 15px; 
+	border-bottom-left-radius: 15px; -webkit-border-bottom-left-radius: 15px; -moz-border-bottom-left-radius: 15px; 
+	border-bottom-right-radius: 15px; -webkit-border-bottom-right-radius: 15px; -moz-border-bottom-right-radius: 15px; 
+  height: 100px;
+  width: 300px;
+  margin-top: 40px;
+  margin-left: 40px;
+  padding: 30px;
+}
+.wishcategory{
+  display: inline-flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 30px;
+}
+
+.mypaymentlist{
+  background-color: #e6e6ff;
+  width: 450px;
+  height: 300px;
+ 
+  /* justify-content: center; */
+  padding: 20px;
+}
+
+.myPayment{
+	/*start ------------*/
+	background: #F8F8F8; 
+	border: solid #D9D9D9 2px; 
+	border-top-left-radius: 15px; -webkit-border-top-left-radius: 15px; -moz-border-top-left-radius: 15px; 
+	border-top-right-radius: 15px; -webkit-border-top-right-radius: 15px; -moz-border-top-right-radius: 15px; 
+	border-bottom-left-radius: 15px; -webkit-border-bottom-left-radius: 15px; -moz-border-bottom-left-radius: 15px; 
+	border-bottom-right-radius: 15px; -webkit-border-bottom-right-radius: 15px; -moz-border-bottom-right-radius: 15px; 
+  height: 150px;
+  width: 300px;
+  margin-top: 40px;
+  margin-left: 40px;
+  padding: 30px;   
+}
+
+
+.myinfo-background{
+  display: flex;
+  background-color: #e6e6ff;
+  height: 500px;
+  width: 600px;
+  margin-top: 60px;
+  margin-left: 200px;
+  padding: 30px;
+
+  h1 {
+    font-size: 25px;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: white;
+    width: 280px;
+    gap: 15px;
+    margin-top: 120px;
+    margin-left: -20px;
+
+
+    input {
+      padding: 10px;
+      border: none;
+      border-bottom: 1px solid gray;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #6666ff;
+      cursor: pointer;
+      color: white;
+    }
+
+
+    span {
+      font-size: 12px;
+      text-align: center;
+    }
+  }
+}
+
+
+.mypayment{
+  color: black;
+  font-size: 20px;
+  background-Color: lightgrey;
+  padding-top: 7px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  flex-direction: row;
+  word-spacing: 5em;
+  justify-content: space-around;
+}
+
+
+.css-question{
+	/*start ------------*/
+	background: #E0E0E0; 
+	opacity: 0.9; 
+	-ms-filter:progid:DXImageTransform.Microsoft.Alpha(Opacity= 88); /* // for IE8 */
+	filter: alpha(opacity= 88); /* //for IE5-7 */
+  height: 1000px;
+  padding: 30px;
+
+  input {
+    background: white; 
+    display: flex;
+    width: 930px;
+    height: 60px;
+    padding: 10px;
+    border: none;
+  }
+
+  textarea {
+    background: white; 
+    display: flex;
+    width: 930px;
+    padding: 10px;
+    border: none;
+    height: 700px;
+  }
+
+  button {
+    background-color: #6666ff;
+    margin: auto;
+    display: block;
+  }
+}
+
+
+.lines{
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 700px 0px 20px;
+  text-align: center;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
+
+  h5:hover {
+      color: palevioletred;  }
+}
+
+

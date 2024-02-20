@@ -1,0 +1,74 @@
+
+.menu{
+    position: absolute;
+    top: 100%; /* 박스 아래로 위치시킴 */
+    left: 30%;
+    width: 120px;
+    flex-direction: row;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+    li{
+    list-style: none;
+    }
+
+    li:hover {
+      background-color: #f2f2f2;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* @keyframes slide-fade-in-dropdown-animation {
+    0% {
+      transform: translateY(-100%);
+    }
+  
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .slide-fade-in-dropdown {
+    overflow: hidden;
+  }
+  
+  .slide-fade-in-dropdown > ul {
+    animation: slide-fade-in-dropdown-animation .4s ease;
+  }
+  
+  @keyframes slide-fade-out-dropdown-animation {
+    0% {
+      transform: translateY(0);
+    }
+  
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+  
+  .slide-fade-out-dropdown {
+    overflow: hidden;
+  }
+  
+  .slide-fade-out-dropdown > ul {
+    animation: slide-fade-out-dropdown-animation 0.4s ease;
+    animation-fill-mode: forwards;
+  }
+  
+  .components-dropdown > ul {
+    position: relative;
+    top: 5px;
+    margin-top: 0;
+    margin-bottom: 5px;
+    padding-left: 0;
+    list-style: none;
+  } */
