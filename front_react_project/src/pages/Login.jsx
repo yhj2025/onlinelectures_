@@ -10,9 +10,7 @@ const Login = () => {
         Password: "",
     });
     const [err, setError] = useState(null);
-
     const navigate = useNavigate();
-
     const {login} = useContext(AuthContext);
 
     const handleChange = (e) => {
@@ -20,6 +18,7 @@ const Login = () => {
     };
 
     const handleSubmit = async (e) => {
+        
         e.preventDefault();
         try{
             await login(inputs)

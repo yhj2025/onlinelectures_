@@ -7,7 +7,9 @@ const port = 5000;
 const bcrypt =require("bcryptjs") ;
 const jwt = require("jsonwebtoken");
 const cookieparser = require('cookie-parser');
-const connection = require('./database');
+const mysql = require('mysql');
+const connection = require('./database.js');
+
 app.use(cookieparser());
 app.use(express.static("public"));
 
@@ -19,6 +21,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());  //json으로 값 보내기
 
+// const connection = mysql.createConnection({
+//     host : 'localhost',
+//     user : 'root', 
+//     password : '0000',
+//     database : 'my_project',
+//     port : 3306
+// });
 
 
 
@@ -65,27 +74,23 @@ app.use(express.json());  //json으로 값 보내기
 //로그인
 app.post("/api/login", (req, res) => {
     console.log("node login step1.......");
-
     const UserID = req.body.UserID;
     const Password = req.body.Password;
-    
     connection.query(`SELECT UserID, Password, Usernickname, UserEmail
-    FROM Users
-    WHERE UserID = ? `, [UserID],(err, row) => {
+                        FROM Users
+                        WHERE UserID = ? `
+                        , [UserID], (err, row) => {
         if(err){
             console.error(err);
             return res.status(500).send('서버 오류');
-
         }
         if(row.length > 0){
             const isPasswordCorrect = bcrypt.compareSync(
                 req.body.Password,
                 row[0].Password
             );
-            
             if(isPasswordCorrect) {
                 console.log("node login step2 correct.......");
-                
                 const { Password, ...user } = row[0];
                 const token = jwt.sign({ id: row[0].UserID }, "jwtkey");
                         res
@@ -200,13 +205,13 @@ app.post("/api/register", (req, res) => {
 
 
 app.post("/api", (req, res) => {
-
     const token = req.cookies.access_token;
     console.log(token);
     // if (token == undefined) return res.status(401).json("Not authenticated!");
     if (!token) {
         // 로그인하지 않은 경우, popular 정보만 응답
-        connection.query(`SELECT LectureID, InstructorID, title, LecturesImageUrl, level, 강의금액, RANK() OVER (ORDER BY 갯수 DESC) AS 등수, 갯수  
+        connection.query(`SELECT LectureID, InstructorID, title, LecturesImageUrl, level, 강의금액, 
+                            RANK() OVER (ORDER BY 갯수 DESC) AS 등수, 갯수  
             FROM (
                 SELECT Lectures.LectureID, Lectures.InstructorID, Lectures.title, Lectures.LecturesImageUrl, Lectures.level
                     , Payments.Amount AS 강의금액, COUNT(*) AS 갯수
