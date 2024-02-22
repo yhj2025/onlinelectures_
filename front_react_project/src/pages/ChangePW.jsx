@@ -16,7 +16,7 @@ const ChangePW = () => {
     const [isCheck, setIsCheck] = useState(false);
 
 
-    function CheckID(){
+    function CheckPassword(){
         setIsCheck(!isCheck);
         setCheckMessage(""); // 버튼을 누를 때마다 체크 메시지 초기화
     }
@@ -48,15 +48,15 @@ const ChangePW = () => {
     }
 
 
-    const CheckChange = async (e) => {
-        e.preventDefault();
+    const CheckChange = async () => {
         console.log("새비밀번호 확인");
         setNewPassword(newPassword);
         setConfirmPassword(confirmPassword);
         console.log("새비밀번호  : ", newPassword);
         console.log("새비밀번호 확인 : ", confirmPassword);
         if(newPassword === confirmPassword){
-            setCheckPasswordMessage("비밀번호가 같습니다. ")
+            setCheckPasswordMessage("비밀번호가 같습니다.")
+            const res = await axios.post("/api/changepassword", newPassword);
         }else{
             setCheckPasswordMessage("비밀번호가 틀립니다.");
         }
@@ -76,18 +76,19 @@ const ChangePW = () => {
     }
 
 
-    useEffect(() => {
+    const SummitChangePW = () => {
         const fetchDate = async() => {
             try{
+                // if()
                 console.log("UserID : ", UserID);
-                const res = await axios.post("/api/checkuserpassword", {UserID});
+                const res = await axios.post("/api/changepassword", {UserID});
                 // console.log("react changePW step2.......", res.data)
             }catch(err){
                 console.log(err);
             }
         };
         fetchDate();
-    }, [UserID]);
+    };
 
     return (
         <div>   
@@ -98,11 +99,11 @@ const ChangePW = () => {
                     <form>
                         <input required type="password" id="password" name="password" placeholder='기존password' onChange={inputChange}/>
                         <button onClick={handleChange}>확인</button>
-                        <span>{checkMessage && <span onClick={CheckID}>{checkMessage}</span>}</span>
-                        <input required type="text" id="password" name='password' placeholder='새password' onChange={handleNewPasswordChange}/>
-                        <input required type="password" id="password" name='password' placeholder='password확인' onChange={handleConfirmPasswordChange}/>
+                        <span>{checkMessage && <span onClick={CheckPassword}>{checkMessage}</span>}</span>
+                        <input required type="text" id="newPassword" name='newPassword' placeholder='새password' onChange={handleNewPasswordChange}/>
+                        <input required type="password" id="confirmPassword" name='confirmPassword' placeholder='password확인' onChange={handleConfirmPasswordChange}/>
                         <span>{checkpasswordMessage && <span onChange={CheckChange}>{checkpasswordMessage}</span>}</span>
-                        <button>비밀번호 변경</button>
+                        <button onclick={SummitChangePW}>비밀번호 변경</button>
                     </form>
                 </div>
             
