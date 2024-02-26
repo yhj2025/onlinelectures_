@@ -169,7 +169,6 @@ app.post("/api/register", (req, res) => {
     const Usernickname = req.body.Usernickname;
     const UserEmail = req.body.UserEmail;
     const UserCellphone = req.body.UserCellphone;
-    const Password = req.body.Password;
     const salt = genSaltSync(10);
     const hash = bcrypt.hashSync(req.body.Password, salt);
     const UserType = "user";
@@ -210,23 +209,26 @@ app.post("/api", (req, res) => {
     // if (token == undefined) return res.status(401).json("Not authenticated!");
     if (!token) {
         // 로그인하지 않은 경우, popular 정보만 응답
-        connection.query(`SELECT LectureID, InstructorID, title, LecturesImageUrl, level, 강의금액, 
-                            RANK() OVER (ORDER BY 갯수 DESC) AS 등수, 갯수  
-            FROM (
-                SELECT Lectures.LectureID, Lectures.InstructorID, Lectures.title, Lectures.LecturesImageUrl, Lectures.level
-                    , Payments.Amount AS 강의금액, COUNT(*) AS 갯수
-                FROM Lectures JOIN Payments 
-                    ON Payments.LectureID = Lectures.LectureID
-                GROUP BY Lectures.LectureID, Lectures.title, Payments.Amount
-            ) AS RankedData
-            ORDER BY 등수
-            LIMIT 6`, (err, result2) => {
+        connection.query(`SELECT LectureID, CategoryID, InstructorID, title, LecturesImageUrl, level, 강의금액, 
+        RANK() OVER (ORDER BY 갯수 DESC) AS 등수, 갯수  
+FROM (
+SELECT Lectures.LectureID, LectureCategory.CategoryID, Lectures.InstructorID, Lectures.title, Lectures.LecturesImageUrl, Lectures.level
+, Payments.Amount AS 강의금액, COUNT(*) AS 갯수
+FROM Lectures JOIN Payments 
+ON Payments.LectureID = Lectures.LectureID
+Join lecturecategory
+ON Lectures.LectureID = lecturecategory.LectureID
+GROUP BY Lectures.LectureID, LectureCategory.CategoryID, Lectures.title, Payments.Amount
+) AS RankedData
+ORDER BY 등수
+LIMIT 6;`, (err, result2) => {
             if (err) {
                 console.error(err);
                 return res.status(500).send('서버오류');
             }
             var popular = result2.map(result2 => ({
                 LectureID: result2.LectureID,
+                CategoryID : result2.CategoryID,
                 InstructorID : result2.InstructorID,
                 title: result2.title,
                 LecturesImageUrl: result2.LecturesImageUrl,
@@ -264,21 +266,26 @@ app.post("/api", (req, res) => {
             LecturesImageUrl : result1.LecturesImageUrl
         }));
         console.log("node mainhome step2 ......", myclass)
-        connection.query(`SELECT LectureID, InstructorID, title, LecturesImageUrl, level, 강의금액, RANK() OVER (ORDER BY 갯수 DESC) AS 등수, 갯수  
-        FROM ( SELECT Lectures.LectureID, Lectures.InstructorID,  Lectures.title, Lectures.LecturesImageUrl, Lectures.level
-                                    , Payments.Amount AS 강의금액, COUNT(*) AS 갯수
-                      FROM Lectures JOIN Payments 
-                        ON Payments.LectureID = Lectures.LectureID
-                      GROUP BY Lectures.LectureID, Lectures.title, Payments.Amount
-                    ) AS RankedData
-        ORDER BY 등수
-        LIMIT 6`, (err, result2) => {
+        connection.query(`SELECT LectureID, CategoryID, InstructorID, title, LecturesImageUrl, level, 강의금액, 
+        RANK() OVER (ORDER BY 갯수 DESC) AS 등수, 갯수  
+FROM (
+SELECT Lectures.LectureID, LectureCategory.CategoryID, Lectures.InstructorID, Lectures.title, Lectures.LecturesImageUrl, Lectures.level
+, Payments.Amount AS 강의금액, COUNT(*) AS 갯수
+FROM Lectures JOIN Payments 
+ON Payments.LectureID = Lectures.LectureID
+Join lecturecategory
+ON Lectures.LectureID = lecturecategory.LectureID
+GROUP BY Lectures.LectureID, LectureCategory.CategoryID, Lectures.title, Payments.Amount
+) AS RankedData
+ORDER BY 등수
+LIMIT 6;`, (err, result2) => {
             if(err){
                 console.error(err);
                 return res.status(500).send('서버오류');
             }
             var popular = result2.map(result2 => ({
                 LectureID : result2.LectureID,
+                CategoryID : result2.CategoryID,
                 InstructorID : result2.InstructorID,
                 title : result2.title,
                 LecturesImageUrl : result2.LecturesImageUrl,
@@ -304,7 +311,6 @@ app.post("/api", (req, res) => {
     });
     });
     }
-
 });
 
 
@@ -506,10 +512,10 @@ LIMIT 1;`
         console.log("node Request Body1:", { LectureID, InstructorID });
 
         //커리큘럼////////////////////////////////////
-        connection.query(`SELECT Lecturetoc.title, Lecturetoc.ParentTOCID, Lecturetoc.VideoLength
-        FROM Lecturetoc Join Lectures
-        ON Lecturetoc.LectureID = Lectures.LectureID
-        WHERE Lecturetoc.LectureID = ?`, [LectureID], (err, result) => {
+        connection.query(`SELECT LectureTOC.title, LectureTOC.ParentTOCID, LectureTOC.VideoLength
+        FROM LectureTOC Join Lectures
+        ON LectureTOC.LectureID = Lectures.LectureID
+        WHERE LectureTOC.LectureID = ?`, [LectureID], (err, result) => {
             if(err){
                 console.error(err);
                 return res.status(500).send('서버 오류');
@@ -1060,7 +1066,7 @@ app.post("/api/checkuserpassword", (req, res) => {
     const Password = req.body.Password;
     const UserID = req.body.UserID;
     console.log("node checkuserpassword step1.......", Password)
-
+    console.log(UserID)
     connection.query(`SELECT Password
     FROM Users
     WHERE UserID= ?;`, [UserID], (err, result) => {
@@ -1095,11 +1101,14 @@ app.post("/api/checkuserpassword", (req, res) => {
 
 
 app.post("/api/changepassword", (req, res) => {
-    const Password = req.body.Password;
+    const salt = genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.newPassword, salt);
     const UserID = req.body.UserID;
+    console.log("암호화 비밀키 : ", hash);
+    console.log(UserID);
     connection.query(`UPDATE Users
     SET Password = ?
-    WHERE UserID = ?;`, [Password, UserID], (err, result) => {
+    WHERE UserID = ?;`, [hash, UserID], (err, result) => {
         if(err){
             console.error(err);
             return res.status(500).send('서버오류');

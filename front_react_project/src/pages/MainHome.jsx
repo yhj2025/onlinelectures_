@@ -11,8 +11,10 @@ axios.defaults.withCredentials = true;
 
 const MainHome = () => {
     console.log("react MainHome step1....");
+    const [push, setPush] = useState([]);
     const [myclasslists, setMyLists] = useState([]);
     const [popularlists, setPopularLists] = useState([]);  
+    const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -38,18 +40,15 @@ const MainHome = () => {
         fetchDate();
     }, []);
 
-    const {currentUser} = useContext(AuthContext);
 
 
-    const isLoggedIn = () => {
-        const token = localStorage.getItem('token');
-        console.log("main 토큰 : ", token);
-        return !token;
-        
-    }
 
-    const PushWish = () => {
+    const handlePuthWishlist = (index) => {
+        const newWishList = [...push];
+        newWishList[index] = !newWishList[index];
+        setPush(newWishList);
 
+        await 
     }
 
 
@@ -118,15 +117,17 @@ const MainHome = () => {
 
             <p className="tag-css">인기 강좌</p>
             <div className="card-container">
-                {popularlists.map((list) => (                
+                {popularlists.map((list, index) => (                
                 <div className="card"  key={list.LectureID}>
                     <img className="card-image" src={`${list.LecturesImageUrl}`} alt="" />
                     <div className="card-content">
                         <h2 className="card-title">{list.title}</h2>
                         <hr style={{backgroundColor:'lightgrey'}}/>
                         <p style={{wordSpacing: '1em'}}>레슨15 {list.level}</p>
-                        <IoHeart size="30" color='lightgrey'/>
-                        <button style = {{float:'right'}} className='button' onClick={() => handleCourses(list.LectureID)}>수강하기</button>
+                        <div onClick={() => handlePuthWishlist(index)}>
+                            {push[index] ? <IoHeart size="30" color='red'/> : <IoHeart size="30" color='lightgrey'/> }
+                            <button style = {{float:'right'}} className='button' onClick={() => handleCourses(list.LectureID)}>수강하기</button>
+                        </div>
                     </div>
                 </div>
                 ))}
