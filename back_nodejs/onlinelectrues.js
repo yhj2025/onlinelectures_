@@ -216,8 +216,8 @@ SELECT Lectures.LectureID, LectureCategory.CategoryID, Lectures.InstructorID, Le
 , Payments.Amount AS 강의금액, COUNT(*) AS 갯수
 FROM Lectures JOIN Payments 
 ON Payments.LectureID = Lectures.LectureID
-Join lecturecategory
-ON Lectures.LectureID = lecturecategory.LectureID
+Join LectureCategory
+ON Lectures.LectureID = LectureCategory.LectureID
 GROUP BY Lectures.LectureID, LectureCategory.CategoryID, Lectures.title, Payments.Amount
 ) AS RankedData
 ORDER BY 등수
@@ -273,8 +273,8 @@ SELECT Lectures.LectureID, LectureCategory.CategoryID, Lectures.InstructorID, Le
 , Payments.Amount AS 강의금액, COUNT(*) AS 갯수
 FROM Lectures JOIN Payments 
 ON Payments.LectureID = Lectures.LectureID
-Join lecturecategory
-ON Lectures.LectureID = lecturecategory.LectureID
+Join LectureCategory
+ON Lectures.LectureID = LectureCategory.LectureID
 GROUP BY Lectures.LectureID, LectureCategory.CategoryID, Lectures.title, Payments.Amount
 ) AS RankedData
 ORDER BY 등수
