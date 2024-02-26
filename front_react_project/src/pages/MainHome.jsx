@@ -43,12 +43,13 @@ const MainHome = () => {
 
 
 
-    const handlePuthWishlist = (index) => {
+    const handlePuthWishlist = async (index, LectureID, CategoryID, title) => {
         const newWishList = [...push];
         newWishList[index] = !newWishList[index];
         setPush(newWishList);
 
-        // await 
+        const res = await axios.post("/api/put/wishlist", {"UserID": currentUser.UserID, "LectureID" : LectureID, "CategoryID": CategoryID, "title": title})
+        console.log(currentUser.UserID, LectureID, CategoryID, title);
     }
 
 
@@ -124,7 +125,7 @@ const MainHome = () => {
                         <h2 className="card-title">{list.title}</h2>
                         <hr style={{backgroundColor:'lightgrey'}}/>
                         <p style={{wordSpacing: '1em'}}>레슨15 {list.level}</p>
-                        <div onClick={() => handlePuthWishlist(index)}>
+                        <div onClick={() => handlePuthWishlist(index, list.LectureID, list.CategoryID, list.title)}>
                             {push[index] ? <IoHeart size="30" color='red'/> : <IoHeart size="30" color='lightgrey'/> }
                             <button style = {{float:'right'}} className='button' onClick={() => handleCourses(list.LectureID)}>수강하기</button>
                         </div>

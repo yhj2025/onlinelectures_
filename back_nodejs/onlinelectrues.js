@@ -319,7 +319,7 @@ app.post("/api/put/wishlist", (req, res) => {
     const LectureID = req.body.LectureID;
     const CategoryID = req.body.CategoryID;
     const title = req.body.title;
-
+    console.log(UserID, LectureID, CategoryID, title)
     connection.query(`INSERT INTO Wishlist(UserID, LectureID, CategoryID, title) VALUES (?, ?, ?, ?);`,
     [UserID, LectureID, CategoryID, title], (err, result) =>{
         if(err){
