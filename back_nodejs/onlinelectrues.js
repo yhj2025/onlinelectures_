@@ -727,7 +727,7 @@ app.post("/api/lectureshowSet", (req, res) => {
             return res.status(500).send('서버오류');
         }
         if(result.length === 0){
-            const sql = `insert into enrollments(UserID, LectureID, AttendanceRate, EnrollmentDate ) value (?, ?, ?, NOW())`;
+            const sql = `insert into Enrollments(UserID, LectureID, AttendanceRate, EnrollmentDate ) value (?, ?, ?, NOW())`;
             const values = [UserID, LectureID, AttendanceRate];
             connection.query(sql, values,(err, insertResult) => {
                 if(err){
@@ -747,7 +747,7 @@ app.post("/api/lectureshowSet", (req, res) => {
                 }
             });
         }else{
-            const sql = `Update enrollments set AttendanceRate = ? where UserID = ? and LectureID = ?`;
+            const sql = `Update Enrollments set AttendanceRate = ? where UserID = ? and LectureID = ?`;
             const values = [AttendanceRate, UserID, LectureID];
             connection.query(sql, values, (err, updateresult) => {
                 if(err){
