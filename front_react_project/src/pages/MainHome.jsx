@@ -48,7 +48,7 @@ const MainHome = () => {
         newWishList[index] = !newWishList[index];
         setPush(newWishList);
 
-        await 
+        // await 
     }
 
 
