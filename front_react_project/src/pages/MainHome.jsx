@@ -31,7 +31,7 @@ const MainHome = () => {
                     console.log(res.data);
                 }else{
                     setMyLists([])
-                    setPopularLists([])
+                    setPopularLists(res.data.popular || [])
                 }
             }catch(err){
                 console.log(err);

@@ -677,13 +677,15 @@ app.post("/api/payinfo", (req, res) => {
 
 
 app.post("/api/lectureshow", (req, res) => {
+    const UserID = req.body.UserID;
     const LectureID = req.body.LectureID;
     connection.query(`SELECT LecturesMaterial.MaterialURL, LecturesMaterial.Description
-    ,Lectures.title as '강의제목', LectureTOC.LectureID, LectureTOC.TocID, LectureTOC.title, LectureTOC.ParentTOCID
+    ,Lectures.title as '강의제목', Enrollments.UserID, Enrollments.AttendanceRate, LectureTOC.LectureID, LectureTOC.TocID, LectureTOC.title, LectureTOC.ParentTOCID
 FROM LecturesMaterial JOIN LectureTOC
 ON LecturesMaterial.TOCID = LectureTOC.TOCID
 JOIN Lectures ON Lectures.LectureID = LectureTOC.LectureID
-WHERE LectureTOC.LectureID = ? LIMIT 1`, [LectureID], (err, result) => {
+Join Enrollments ON Lectures.LectureID = Enrollments.LectureID
+WHERE LectureTOC.LectureID = ? and Enrollments.UserID = ? LIMIT 1;`, [LectureID, UserID], (err, result) => {
     if(err){
         console.error(err);
         return res.status(500).send('서버오류');
