@@ -547,9 +547,11 @@ LIMIT 1;`
 
 app.post("/api/selectEnrollment", (req, res) => {
     const UserID = req.body.UserID;
-    connection.query(`select pay_state, LectureId
+    const LectureID = req.body.LectureID;
+    console.log(UserID, LectureID);
+    connection.query(`select pay_state, LectureId, amount
     from Payments
-    where UserID = ?;`, [UserID], (err, result) => {
+    where UserID = ? and LectureID = ?;`, [UserID, LectureID], (err, result) => {
         if(err){
             console.error(err);
             return res.status(500).send('서버오류');
@@ -560,17 +562,17 @@ app.post("/api/selectEnrollment", (req, res) => {
         }));
         if(selectEnrollment.length > 0){
             res.json({
-                code : 200,
-                message : 'success',
+                code : 401,
+                message : '이미 수강중인 강좌입니다.',
                 selectEnrollment : selectEnrollment
             });
         }else{
             res.json({
-                code : 400,
-                message : '찾을 수 없습니다.',
+                code : 200,
+                message : 'success',
                 selectEnrollment : selectEnrollment
-
             });
+            
         }
     })
 })
@@ -582,7 +584,7 @@ app.post("/api/enrollment", (req, res) => {
     const EnrollmentDate = req.body.EnrollmentDate;
     const AttendanceRate = req.body.AttendanceRate;
     const paymentstate = req.body.paymentstate;
-    connection.query(`INSERT INTO Enrollments(UserID, LectureID, EnrollmentDate, AttendanceRate, paymentstate) VALUES (?, ?, ?, ?, ?);`,
+    connection.query(`INSERT INTO Enrollments(UserID, LectureID, EnrollmentDate, AttendanceRate, paymentstate) VALUES (?, ?, NOW(), ?, 1);`,
     [UserID, LectureID, EnrollmentDate, AttendanceRate, paymentstate], (err, result) => {
         if(err){
             console.error(err);
@@ -647,8 +649,9 @@ app.post("/api/payinfo", (req, res) => {
     const PaymentDate = req.body.PaymentDate;
     const pay_state = req.body.pay_state;
     const LectureID = req.body.LectureID;
+    console.log(LectureID);
     connection.query(`INSERT INTO Payments(UserID, Amount, PaymentDate, pay_state, LectureID) 
-    VALUES (?, ?, ?, ?, ?)`,[UserID, Amount, PaymentDate, pay_state, LectureID], (err, result) => {
+    VALUES (?, ?, NOW(), '결제완료', ?)`,[UserID, Amount, PaymentDate, pay_state, LectureID], (err, result) => {
         if(err){
             console.error(err);
             return res.status(500).send('서버오류');

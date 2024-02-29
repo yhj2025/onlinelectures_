@@ -127,7 +127,7 @@ const MainHome = () => {
                         <p style={{wordSpacing: '1em'}}>레슨15 {list.level}</p>
                         <div onClick={() => handlePuthWishlist(index, list.LectureID, list.CategoryID, list.title)}>
                             {push[index] ? <IoHeart size="30" color='red'/> : <IoHeart size="30" color='lightgrey'/> }
-                            <button style = {{float:'right'}} className='button' onClick={() => handleCourses(list.LectureID)}>수강하기</button>
+                            <button style = {{float:'right'}} className='button' onClick={() => handleCourses(list.LectureID)}>상세보기</button>
                         </div>
                     </div>
                 </div>

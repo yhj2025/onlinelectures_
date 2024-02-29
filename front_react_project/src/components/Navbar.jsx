@@ -93,6 +93,7 @@ const Navbar = (props) => {
                             {view ? <IoIosArrowUp /> : <IoIosArrowDown />}
                             {view && <DropdownMenu/>} 
                         </ul>
+                        <p>{currentUser.UserID}님</p>
                     <Link className="link" to="/search" onClick={handleLogout}>
                         <button onClick={handleLogout}>로그아웃</button>
                     </Link>

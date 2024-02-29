@@ -139,6 +139,13 @@ const VideoPlayer = ({LectureID, src}) => {
             LectureshowData();
           };
         
+          const handleVideoPause = () => {
+            setTimeout(() => {
+                clearInterval(playIntervalId);
+                console.log("타이머가 멈춥니다.");
+            }, 5000);
+          };
+
           const handlePlayButtonClick = () => {
             playIntervalId = setInterval(() => {
               LectureshowData();
@@ -146,7 +153,9 @@ const VideoPlayer = ({LectureID, src}) => {
             }, 5000);
             video.addEventListener('timeupdate', timeUpdateHandler);
             video.addEventListener('ended', handleVideoEnd);
+            video.addEventListener('pause', handleVideoPause);
           };
+          
           
             video.addEventListener('play', handlePlayButtonClick);
             video.addEventListener('loadedmetadata', loadedMetadataHandler);
@@ -159,7 +168,7 @@ const VideoPlayer = ({LectureID, src}) => {
                 video.removeEventListener('ended', handleVideoEnd);
                 video.removeEventListener('play', handlePlayButtonClick);
                 video.removeEventListener('loadedmetadata', loadedMetadataHandler);
-            
+                video.removeEventListener('pause', handleVideoPause);
           };
 
     }, [LectureID]);
@@ -217,7 +226,7 @@ const VideoPlayer = ({LectureID, src}) => {
                 <br/>
                 <div className='locate' style={{marginLeft : '300px', marginRight : '300px'}}>
                     <div onClick={() => rewind()}><TbRewindBackward10 size="30"/></div>
-                    <div className='video' onClick={() => {setView(!view)}}>{view ? <div onClick={playVideo}><FaRegCirclePlay size="30" /> </div>: <div onClick={pauseVideo}><FaRegCirclePause size="30"/></div>}</div>
+                    <div className='video' onClick={() => {setView(!view)}}>{view ? <div onClick={pauseVideo}><FaRegCirclePause size="30"/></div> : <div onClick={playVideo}><FaRegCirclePlay size="30" /> </div>}</div>
                     <div onClick={() => fastForward()}><TbRewindForward10 size="30" /></div>
 
                 </div>

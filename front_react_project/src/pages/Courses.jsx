@@ -30,7 +30,20 @@ const Courses = () => {
 
 
 
-
+    useEffect(() => {
+      const jquery = document.createElement("script");
+      jquery.src = "https://code.jquery.com/jquery-1.12.4.min.js";
+      const iamport = document.createElement("script");
+      iamport.src = "https://cdn.iamport.kr/js/iamport.payment-1.1.7.js";
+      document.head.appendChild(jquery);
+      document.head.appendChild(iamport);
+  
+      return () => {
+        document.head.removeChild(jquery);
+        document.head.removeChild(iamport);
+      };
+    }, []);
+  
 
 
 const LectureEnrollHandler = async () => {
@@ -47,29 +60,40 @@ const LectureEnrollHandler = async () => {
           merchant_uid: `mid_${new Date().getTime()}`, // 주문번호
           amount: detaillists[0].amount, // 결제금액
           name: detaillists[0].title, // 주문명
+          LectureID : detaillists[0].LectureID,
           buyer_name: currentUser.Usernickname, // 구매자 이름
           buyer_email: currentUser.UserEmail, // 구매자 이메일
         };
         console.log("paymentData", paymentData);
+        console.log(detaillists);
 
         // IMP SDK 초기화
-        const { IMP } = window;
-        console.log("IMP : " ,IMP);
+        const IMP = window.IMP;
+        console.log("IMP : " ,window.IMP);
         console.log("imp : " ,imp);
         console.log("apiKey : " ,apiKey);
-        IMP.init("imp00433236");
+        window.IMP.init(imp);
+
+        try {
+          const enrollmentResponse = await axios.post(`/api/selectEnrollment`,{"UserID" : currentUser.UserID, "LectureID": LectureID}) 
+          console.log(enrollmentResponse.data)
+          if(enrollmentResponse.data.code === 401){
+            navigate(`/onlinestudy/${LectureID}`);
+          }else if (enrollmentResponse.data.code === 200) {
+
         // 결제 요청
         IMP.request_pay(paymentData, async (response) => {
           const { success, error_msg } = response;
           if (success) {
-            try {
-                const enrollmentResponse = await axios.post(`/api/selectEnrollment`,{"UserID" : currentUser.UserID}) 
-                console.log(enrollmentResponse.data)
-              if (enrollmentResponse.data.code === 200) {
+            
+            const res_payinfo = await axios.post(
+              `/api/payinfo`,
+              { "LectureID": detaillists[0].LectureID, "UserID" : currentUser.UserID, "Amount": detaillists[0].amount }
+            )
                 // 서버로 수강 등록 요청
                 const res = await axios.post(
-                  `/api/myenrollment`,
-                  { LectureID: LectureID },
+                  `/api/enrollment`,
+                  { "LectureID": LectureID, "UserID" : currentUser.UserID },
                   {
                     withCredentials: true,
                     headers: {
@@ -77,22 +101,29 @@ const LectureEnrollHandler = async () => {
                     },
                   }
                 );
+                alert("결제 완료!!");
                 
-              } else {
-                // 결제 검증 실패
-                alert("결제 검증에 실패했습니다.");
-                return;
-              }
-            } catch (error) {
-              console.error("API 호출 중 오류:", error);
-              alert("결제 요청 중 오류가 발생했습니다.");
-              return;
-            }
+               
+            
           } else {
-            alert(`결제 실패: ${error_msg}`);
+            alert(`결제 실패`);
             return;
           }
-        });
+        })
+      } 
+      else {
+        // 결제 검증 실패
+        alert("결제 검증에 실패했습니다.");
+        return;
+      }
+
+
+      } catch (error) {
+        console.error("API 호출 중 오류:", error);
+        alert("결제 요청 중 오류가 발생했습니다.");
+        return;
+      }
+        ;
       } catch (error) {
         console.error("API 호출 중 오류:", error);
         alert("결제 요청 중 오류가 발생했습니다.");
@@ -127,16 +158,16 @@ const LectureEnrollHandler = async () => {
     return (
         <div>
        <div>
-        {detaillists.map((list) => (
-            <div className = 'onelist' key={list.LectureID}>
+        {detaillists.map((detail) => (
+            <div className = 'onelist' key={detail.LectureID}>
                 
             <p>
-            <div style = {{float:'right'}} onClick={() => handleOnlineStudy(list.LectureID)}>
+            <div style = {{float:'right'}} onClick={() => LectureEnrollHandler(detail.LectureID)}>
                 <input className='css-box-radius' type='button' value='수강하기'></input></div>
                 
                 
 
-                <h1>{list.title}</h1>
+                <h1>{detail.title}</h1>
                 <hr/>
                 <br/>
                 <div>
@@ -148,13 +179,13 @@ const LectureEnrollHandler = async () => {
 
                     <div className='category' >
                         <p>난이도 </p>
-                        <p>{list.level}</p>
+                        <p>{detail.level}</p>
                     </div>
                     <div className='line'> </div>
 
                     <div className='category'>
                         <p>카테고리 </p>
-                        <p>{list.CategoryName}</p>
+                        <p>{detail.CategoryName}</p>
                     </div>
                 </div> 
                
@@ -185,17 +216,17 @@ const LectureEnrollHandler = async () => {
             <div className='minilist'>
                 <div>
                     <h2>강사소개</h2>
-                    {instructorlsits.map((list) => (
+                    {instructorlsits.map((instructor) => (
 
                     
                     <div className='instructor-info'>
                         <div className="box" >
-                            <img class="profile" src={`${list.instructorImgUrl}`} alt='강사 이미지를 넣어주세요'/>
+                            <img class="profile" src={`${instructor.instructorImgUrl}`} alt='강사 이미지를 넣어주세요'/>
                         </div>
                         <p style={{margin: '0 30px', width: '240px'}}> 
-                            이름 : {list.InstructorName} <br/>
-                            이메일 : {list.Email}  <br/>
-                            경력 : {list.Qualifications}
+                            이름 : {instructor.InstructorName} <br/>
+                            이메일 : {instructor.Email}  <br/>
+                            경력 : {instructor.Qualifications}
                         </p>
                     </div>
                     ))}
@@ -210,21 +241,21 @@ const LectureEnrollHandler = async () => {
                     <h1>커리큘럼</h1>      
                     <h3>총 레슨 15개 영상 35분</h3>
             </p>    
-            {curriculumlists.map((list) => (
+            {curriculumlists.map((curriculumlist) => (
 
-            <div key={list.ParentTOCID}>
+            <div key={curriculumlist.ParentTOCID}>
                 
                 <div>
                     
-                        {list.ParentTOCID === null ? (
+                        {curriculumlist.ParentTOCID === null ? (
                             <div className='curriculum'>
-                                <p style={{ margin: '0 10px', alignSelf: 'center'}}>{list.title}</p>
+                                <p style={{ margin: '0 10px', alignSelf: 'center'}}>{curriculumlist.title}</p>
                             </div>
                         ) :(
                             <div className='curriculum-toc'>
                                 <p >
-                                    {list.title}
-                                    <div style={{ float: 'right' }}>{list.VideoLength}</div>
+                                    {curriculumlist.title}
+                                    <div style={{ float: 'right' }}>{curriculumlist.VideoLength}</div>
                                 </p>
                             </div>
                             )
