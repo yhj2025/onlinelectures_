@@ -585,7 +585,7 @@ app.post("/api/enrollment", (req, res) => {
     const AttendanceRate = req.body.AttendanceRate;
     const paymentstate = req.body.paymentstate;
     connection.query(`INSERT INTO Enrollments(UserID, LectureID, EnrollmentDate, AttendanceRate, paymentstate) VALUES (?, ?, NOW(), ?, 1);`,
-    [UserID, LectureID, EnrollmentDate, AttendanceRate, paymentstate], (err, result) => {
+    [UserID, LectureID, AttendanceRate], (err, result) => {
         if(err){
             console.error(err);
             return res.status(500).send('서버오류');
@@ -649,9 +649,9 @@ app.post("/api/payinfo", (req, res) => {
     const PaymentDate = req.body.PaymentDate;
     const pay_state = req.body.pay_state;
     const LectureID = req.body.LectureID;
-    console.log(LectureID);
+    console.log(LectureID, Amount, UserID);
     connection.query(`INSERT INTO Payments(UserID, Amount, PaymentDate, pay_state, LectureID) 
-    VALUES (?, ?, NOW(), '결제완료', ?)`,[UserID, Amount, PaymentDate, pay_state, LectureID], (err, result) => {
+    VALUES (?, ?, NOW(), '결제완료', ?)`,[UserID, Amount, LectureID], (err, result) => {
         if(err){
             console.error(err);
             return res.status(500).send('서버오류');

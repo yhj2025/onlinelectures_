@@ -88,8 +88,16 @@ const LectureEnrollHandler = async () => {
             
             const res_payinfo = await axios.post(
               `/api/payinfo`,
-              { "LectureID": detaillists[0].LectureID, "UserID" : currentUser.UserID, "Amount": detaillists[0].amount }
+              { "LectureID": detaillists[0].LectureID, "UserID" : currentUser.UserID, "Amount": detaillists[0].amount },
+              {
+                withCredentials: true,
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              }
             )
+            console.log(res_payinfo.data);
+
                 // 서버로 수강 등록 요청
                 const res = await axios.post(
                   `/api/enrollment`,
@@ -101,6 +109,8 @@ const LectureEnrollHandler = async () => {
                     },
                   }
                 );
+                console.log(res);
+
                 alert("결제 완료!!");
                 
                
