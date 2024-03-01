@@ -21,13 +21,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());  //json으로 값 보내기
 
-// const connection = mysql.createConnection({
-//     host : 'localhost',
-//     user : 'root', 
-//     password : '0000',
-//     database : 'my_project',
-//     port : 3306
-// });
+
 
 
 
